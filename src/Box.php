@@ -7,6 +7,13 @@ use GDText\Struct\Rectangle;
 class Box
 {
     /**
+    *   @var textRotation
+    *   Milner99 added text rotation ability
+    */
+    protected $textRotation = 0;
+
+
+    /**
      * @var resource
      */
     protected $im;
@@ -87,6 +94,18 @@ class Box
         $this->fontColor = new Color(0, 0, 0);
         $this->strokeColor = new Color(0, 0, 0);
         $this->box = new Rectangle(0, 0, 100, 100);
+    }
+
+    /**
+    *   @param int to update the textRotation
+    */
+    public function setTextRotation($rotation) {
+        $rotation = intval($rotation);
+        if(gettype($rotation) != "integer") {
+            $this->textRotation = $rotation;
+        } else {
+            throw new \InvalidArgumentException('Invalid rotation angle was provided.');
+        }
     }
 
     /**
@@ -419,7 +438,7 @@ class Box
         imagettftext(
             $this->im,
             $this->getFontSizeInPoints(),
-            0, // no rotation
+            $this->textRotation, // rotation added by Milner99, Forked stil/gd-text 2019-04-09
             $position->getX(),
             $position->getY(),
             $color->getIndex($this->im),
